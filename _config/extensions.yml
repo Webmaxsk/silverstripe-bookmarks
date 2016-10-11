@@ -1,0 +1,7 @@
+Member:
+  extensions:
+    - BookmarksMemberExtension
+
+ContentController:
+  extensions:
+    - BookmarksContentControllerExtension

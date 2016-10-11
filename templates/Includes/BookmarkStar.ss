@@ -1,0 +1,1 @@
+<span class="bookmark-star"><% if isCurrentUrlInBookmarks %>Stránka sa nachádza v záložkách<% else %>Stránka nie je v záložkách<% end_if %></span>

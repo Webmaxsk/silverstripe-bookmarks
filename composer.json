@@ -1,0 +1,16 @@
+{
+	"name": "webmaxsk/silverstripe-bookmarks",
+	"description": "Looged in members can bookmark any internal or external page.",
+	"type": "silverstripe-module",
+	"license": "BSD-3-Clause",
+	"keywords": ["silverstripe", "bookmarks"],
+	"authors": [
+		{
+			"name": "Rastislav Brandobur",
+			"email": "brandobur@webmax.sk"
+		}
+	],
+	"extra": {
+		"installer-name": "silverstripe-bookmarks"
+	}
+}
