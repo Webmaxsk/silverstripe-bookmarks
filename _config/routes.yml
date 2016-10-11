@@ -1,0 +1,3 @@
+Director:
+  rules:
+    'bookmarks//$Action': 'Bookmarks_Controller'
