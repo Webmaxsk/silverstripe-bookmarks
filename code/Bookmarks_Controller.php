@@ -291,6 +291,8 @@ class Bookmarks_Controller extends Page_Controller {
 				}
 			}
 		}
+
+		return $this->customise(array('Bookmarks'=>singleton('BookmarksWidget')->getBookmarks()))->renderWith(array('BookmarksWidget'))->getValue();
 	}
 
 	public function Link($action = null) {
