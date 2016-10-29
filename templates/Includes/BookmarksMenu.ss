@@ -17,11 +17,13 @@
 			forcePlaceholderSize: true,
 			axis: 'y',
 			stop: function( event, ui ) {
-
 				$.ajax({
 					data: $(this).sortable('serialize'),
 					type: 'POST',
-					url: '$saveAllBookmarksLink'
+					url: '$saveAllBookmarksLink',
+					success: function(data) {
+						$('.BookmarksWidget .bookmark-list').replaceWith(data);
+					}
 				});
 			}
 		});
