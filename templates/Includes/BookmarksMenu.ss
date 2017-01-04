@@ -13,7 +13,8 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#bookmarks-sortable').sortable({
-			placeholder: "bookmark-placeholder",
+			cursor: 'move',
+			placeholder: 'bookmark-placeholder',
 			forcePlaceholderSize: true,
 			axis: 'y',
 			stop: function( event, ui ) {
