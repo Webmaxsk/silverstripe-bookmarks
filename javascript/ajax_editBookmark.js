@@ -1,11 +1,14 @@
 $(document).on('click', "#Form_EditBookmarkForm_action_doEditBookmark, #Form_EditBookmarkForm_action_doDeleteBookmark", function(event) {
 	event.preventDefault();
 
-	var form = $('#Form_EditBookmarkForm');
+	var form = $("#Form_EditBookmarkForm");
 	var submitButton = $(this);
 
 	var actionName = $(this).attr("name");
 	var action = actionName+"="+$(this).attr("value");
+
+	// silverstripe-member-widgets module
+	var memberWidgetsIsotope = $('#memberwidgets-sortable.memberwidgets-isotope');
 
 	$.ajax(form.attr('action'), {
 		type: "POST",
@@ -21,8 +24,14 @@ $(document).on('click', "#Form_EditBookmarkForm_action_doEditBookmark, #Form_Edi
 				if(typeof json == 'object') {
 					var bookmark = $('#bookmarks-sortable #bookmark-'+json.BookmarkID);
 
-					if (actionName=='action_doDeleteBookmark')
+					if (actionName=='action_doDeleteBookmark') {
 						bookmark.remove();
+
+						if (memberWidgetsIsotope.length)
+							memberWidgetsIsotope.isotope('reloadItems').isotope({
+								sortBy: 'original-order'
+							});
+					}
 					else
 						bookmark.replaceWith(json.Bookmark);
 
