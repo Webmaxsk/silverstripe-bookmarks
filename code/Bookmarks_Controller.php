@@ -119,7 +119,7 @@ class Bookmarks_Controller extends Page_Controller {
 		$bookmark->Title = $data['Title'];
 		$bookmark->Url = $data['Url'];
 		$bookmark->MemberID = Member::currentUserID();
-		
+
 		$lastID = 0;
 		if (($bookmarks = Bookmark::get()) && $bookmarks->count())
 			$lastID = $bookmarks->last()->Sort;
@@ -203,7 +203,7 @@ class Bookmarks_Controller extends Page_Controller {
 
 	public function doEditBookmark($data, $form) {
 		if (isset($data['ID']) && ($ID = $data['ID']) && is_numeric($ID) && ($bookmark = DataObject::get_by_id('Bookmark',$ID)) && $bookmark->canEditCurrent()) {
-			
+
 			$form->saveInto($bookmark);
 
 			$bookmark->write();
@@ -244,7 +244,7 @@ class Bookmarks_Controller extends Page_Controller {
 
 	public function doDeleteBookmark($data, $form) {
 		if (isset($data['ID']) && ($ID = $data['ID']) && is_numeric($ID) && ($bookmark = DataObject::get_by_id('Bookmark',$ID)) && $bookmark->canEditCurrent()) {
-			
+
 			$bookmark->delete();
 
 			if ($this->request->isAjax()) {
