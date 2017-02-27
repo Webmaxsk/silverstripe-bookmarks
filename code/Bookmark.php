@@ -30,7 +30,7 @@ class Bookmark extends DataObject {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-		
+
 		$fields->removeByName('Sort');
 
 		return $fields;
