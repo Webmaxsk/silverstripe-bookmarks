@@ -6,6 +6,7 @@ class BookmarksContentControllerExtension extends Extension {
 		Requirements::javascript(THIRDPARTY_DIR."/jquery/jquery.js");
 		Requirements::javascript(THIRDPARTY_DIR."/jquery-ui/jquery-ui.js");
 
+		Requirements::javascript(BOOKMARKS_DIR."/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js");
 		Requirements::javascript(BOOKMARKS_DIR."/magnific-popup/dist/jquery.magnific-popup.min.js");
 		Requirements::javascript(BOOKMARKS_DIR."/javascript/bookmarks.js");
 		Requirements::javascript(BOOKMARKS_DIR."/javascript/ajax_addBookmark.js");
