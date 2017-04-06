@@ -3,7 +3,7 @@
 class Bookmark extends DataObject {
 
 	private static $db = array(
-		'Title' => 'Varchar(20)',
+		'Title' => 'Varchar(55)',
 		'Url' => 'Varchar(2083)',
 
 		'Sort' => 'Int'
