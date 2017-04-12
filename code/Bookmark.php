@@ -15,6 +15,25 @@ class Bookmark extends DataObject {
 
 	private static $default_sort = 'Sort Asc';
 
+	public function fieldLabels($includerelations = true) {
+		$cacheKey = $this->class . '_' . $includerelations;
+
+		if(!isset(self::$_cache_field_labels[$cacheKey])) {
+			$labels = parent::fieldLabels($includerelations);
+			$labels['Title'] = _t('Bookmark.TITLE', 'Title');
+			$labels['Url'] = _t('Bookmark.URL', 'Url');
+			$labels['Sort'] = _t('Bookmark.SORT', 'Sort');
+
+			if($includerelations) {
+				$labels['Member'] = _t('Member.SINGULARNAME', 'Member');
+			}
+
+			self::$_cache_field_labels[$cacheKey] = $labels;
+		}
+
+		return self::$_cache_field_labels[$cacheKey];
+	}
+
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 
@@ -36,11 +55,11 @@ class Bookmark extends DataObject {
 		return $fields;
 	}
 
-	public function getFrontEndFields($emailOnly = false) {
-		$fields = new FieldList();
-
-		$fields->push(TextField::create('Title'));
-		$fields->push(TextField::create('Url'));
+	public function getFrontEndFields($params = null) {
+		$fields = new FieldList(array(
+			$this->dbObject('Title')->scaffoldFormField(_t('Bookmark.TITLE', 'Title')),
+			$this->dbObject('Url')->scaffoldFormField(_t('Bookmark.URL', 'Url'))
+		));
 
 		return $fields;
 	}

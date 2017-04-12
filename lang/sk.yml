@@ -1,0 +1,28 @@
+sk:
+  Bookmark:
+    PLURALNAME: Záložky
+    SINGULARNAME: Záložka
+    SORT: 'Poradie zoradenia'
+    TITLE: Názov
+    URL: 'Url adresa'
+  BookmarksWidget:
+    CMSTITLE: Záložky
+    DESCRIPTION: 'Zobrazí záložky.'
+    TITLE: 'Moje záložky'
+  Bookmarks_Controller:
+    ADDBOOKMARK:
+      ACTION: Pridať
+      TITLE: 'Pridať záložku'
+    BOOKMARKADDED: 'Záložka pridaná'
+    BOOKMARKDELETED: 'Záložka vymazaná'
+    BOOKMARKSAVED: 'Záložka uložená'
+    BOOKMARKSTITLE: Záložky
+    DELETEBOOKMARK:
+      ACTION: Vymazať
+    EDITBOOKMARK:
+      ACTION: Upraviť
+      TITLE: 'Upraviť záložku'
+    PAGEISBOOKMARKED: 'Stránka sa nachádza v záložkách'
+    PAGEISNOTBOOKMARKED: 'Stránka nie je v záložkách'
+    SAVEBOOKMARK:
+      ACTION: Uložiť
