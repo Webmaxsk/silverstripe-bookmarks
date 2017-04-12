@@ -7,7 +7,7 @@
 				<% end_loop %>
 			<% end_if %>
 		</ul>
-		<a id="addBookmarkLink" href="$addBookmarkLink?CurrentTitle=$CurrentTitle&CurrentUrl=$CurrentUrl" class="addBookmark ajax-popup-link">Pridať záložku</a>
+		<a id="addBookmarkLink" href="$addBookmarkLink?CurrentTitle=$CurrentTitle&CurrentUrl=$CurrentUrl" class="addBookmark ajax-popup-link"><%t Bookmarks_Controller.ADDBOOKMARK.TITLE 'Add bookmark' %></a>
 	</div>
 <% end_if %>
 <script type="text/javascript">

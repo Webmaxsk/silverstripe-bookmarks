@@ -11,8 +11,8 @@ function init_bookmarks() {
 				return $('html').removeClass('popup-opened');
 			}
 		},
-		tClose: 'Zatvoriť (Esc)',
-		tLoading: 'Prebieha načítanie...'
+		tClose: ss.i18n._t('Bookmarks.CLOSE', 'Close (Esc)'),
+		tLoading: ss.i18n._t('Bookmarks.LOADING', 'Loading...')
 	});
 
 	$(document).on('click', '#member_bookmarks .ajax-popup-link', function() {

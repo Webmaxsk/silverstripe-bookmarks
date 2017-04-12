@@ -14,7 +14,7 @@ $(document).on('click', "#Form_EditBookmarkForm_action_doEditBookmark, #Form_Edi
 		type: "POST",
 		data: form.serialize()+"&"+action,
 		beforeSend: function() {
-			submitButton.attr('value','Prebieha odosielanie...');
+			submitButton.attr('value',ss.i18n._t('Bookmark.PROCESSING', 'Processing...'));
 			submitButton.attr("disabled", true);
 		},
 		success: function(data) {

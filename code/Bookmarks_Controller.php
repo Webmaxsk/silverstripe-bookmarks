@@ -24,11 +24,11 @@ class Bookmarks_Controller extends Page_Controller {
 
 	public function index() {
 		if (($form = $this->NullForm()) && $form->Message() && $form->MessageType()=="good") {
-			$title = 'Záložky';
+			$title = _t('Bookmarks_Controller.BOOKMARKSTITLE', 'Bookmarks');
 			$content = '';
 		}
 		else {
-			$title = 'Záložky';
+			$title = _t('Bookmarks_Controller.BOOKMARKSTITLE', 'Bookmarks');
 			$content = '';
 		}
 
@@ -63,7 +63,7 @@ class Bookmarks_Controller extends Page_Controller {
 	}
 
 	public function addBookmark() {
-		$title = 'Pridať záložku';
+		$title = _t('Bookmarks_Controller.ADDBOOKMARK.TITLE', 'Add bookmark');
 		$content = '';
 		$form = $this->AddBookmarkForm();
 
@@ -103,7 +103,7 @@ class Bookmarks_Controller extends Page_Controller {
 		$fields->dataFieldByName('Url')->setValue($url);
 
 		$actions = new FieldList(
-			FormAction::create('doAddBookmark', 'Pridať')
+			FormAction::create('doAddBookmark', _t('Bookmarks_Controller.ADDBOOKMARK.ACTION', 'Add'))
 		);
 
 		$validator = $bookmark->getFrontEndValidator();
@@ -143,7 +143,7 @@ class Bookmarks_Controller extends Page_Controller {
 				$BookmarksLink .= "?".implode('&', $BookmarksLinkParams);
 
 			return json_encode(array(
-				'Message' => 'Záložka pridaná',
+				'Message' => _t('Bookmarks_Controller.BOOKMARKADDED', 'Bookmark added'),
 				'Type' => 'good',
 				'BookmarksLink' => $BookmarksLink,
 				'BookmarkID' => $bookmark->ID,
@@ -153,14 +153,14 @@ class Bookmarks_Controller extends Page_Controller {
 			));
 		}
 		else {
-			$this->NullForm()->sessionMessage('Záložka pridaná', 'good');
+			$this->NullForm()->sessionMessage(_t('Bookmarks_Controller.BOOKMARKADDED', 'Bookmark added'), 'good');
 
 			return $this->redirect($this->Link());
 		}
 	}
 
 	public function editBookmark() {
-		$title = 'Upraviť záložku';
+		$title = _t('Bookmarks_Controller.EDITBOOKMARK.TITLE', 'Edit bookmark');
 		$content = '';
 		$form = $this->EditBookmarkForm();
 
@@ -186,8 +186,8 @@ class Bookmarks_Controller extends Page_Controller {
 		$fields->push(new HiddenField('ID'));
 
 		$actions = new FieldList(
-			FormAction::create('doEditBookmark', 'Uložiť'),
-			FormAction::create('doDeleteBookmark', 'Vymazať')
+			FormAction::create('doEditBookmark', _t('Bookmarks_Controller.SAVEBOOKMARK.ACTION', 'Save')),
+			FormAction::create('doDeleteBookmark', _t('Bookmarks_Controller.DELETEBOOKMARK.ACTION', 'Delete'))
 		);
 
 		$validator = $bookmark->getFrontEndValidator();
@@ -223,7 +223,7 @@ class Bookmarks_Controller extends Page_Controller {
 					$BookmarksLink .= "?".implode('&', $BookmarksLinkParams);
 
 				return json_encode(array(
-					'Message' => 'Záložka uložená',
+					'Message' => _t('Bookmarks_Controller.BOOKMARKSAVED', 'Bookmark saved'),
 					'Type' => 'good',
 					'BookmarksLink' => $BookmarksLink,
 					'BookmarkID' => $bookmark->ID,
@@ -233,7 +233,7 @@ class Bookmarks_Controller extends Page_Controller {
 				));
 			}
 			else {
-				$this->NullForm()->sessionMessage('Záložka uložená', 'good');
+				$this->NullForm()->sessionMessage(_t('Bookmarks_Controller.BOOKMARKSAVED', 'Bookmark saved'), 'good');
 
 				return $this->redirect($this->Link());
 			}
@@ -262,7 +262,7 @@ class Bookmarks_Controller extends Page_Controller {
 					$BookmarksLink .= "?".implode('&', $BookmarksLinkParams);
 
 				return json_encode(array(
-					'Message' => 'Záložka vymazaná',
+					'Message' => _t('Bookmarks_Controller.BOOKMARKDELETED', 'Bookmark deleted'),
 					'Type' => 'good',
 					'BookmarksLink' => $BookmarksLink,
 					'BookmarkID' => $bookmark->OldID,
@@ -271,7 +271,7 @@ class Bookmarks_Controller extends Page_Controller {
 				));
 			}
 			else {
-				$this->NullForm()->sessionMessage('Záložka vymazaná', 'good');
+				$this->NullForm()->sessionMessage(_t('Bookmarks_Controller.BOOKMARKDELETED', 'Bookmark deleted'), 'good');
 
 				return $this->redirect($this->Link());
 			}

@@ -11,6 +11,7 @@ class BookmarksContentControllerExtension extends Extension {
 		Requirements::javascript(BOOKMARKS_DIR."/javascript/bookmarks.js");
 		Requirements::javascript(BOOKMARKS_DIR."/javascript/ajax_addBookmark.js");
 		Requirements::javascript(BOOKMARKS_DIR."/javascript/ajax_editBookmark.js");
+		Requirements::add_i18n_javascript(BOOKMARKS_DIR."/javascript/lang");
 
 		Requirements::customScript("
 			init_bookmarks();

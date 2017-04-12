@@ -13,7 +13,7 @@ $(document).on('click', "#Form_AddBookmarkForm_action_doAddBookmark", function(e
 		type: "POST",
 		data: form.serialize(),
 		beforeSend: function() {
-			submitButton.attr('value','Prebieha odosielanie...');
+			submitButton.attr('value',ss.i18n._t('Bookmark.PROCESSING', 'Processing...'));
 			submitButton.attr("disabled", true);
 		},
 		success: function(data) {

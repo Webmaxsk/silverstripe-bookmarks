@@ -9,5 +9,5 @@
 		<% include BookmarksMenu %>
 	</div>
 <% else %>
-	<a href="$bookmarksLink?CurrentTitle=$Title&CurrentUrl=$CurrentUrl" class="showBookmarks" title="Záložky"><% include BookmarkStar %></a>
+	<a href="$bookmarksLink?CurrentTitle=$Title&CurrentUrl=$CurrentUrl" class="showBookmarks" title="<%t Bookmark.PLURALNAME 'Bookmarks' %>"><% include BookmarkStar %></a>
 <% end_if %>
