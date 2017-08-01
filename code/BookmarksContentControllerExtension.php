@@ -8,14 +8,11 @@ class BookmarksContentControllerExtension extends Extension {
 
 		Requirements::javascript(BOOKMARKS_DIR."/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js");
 		Requirements::javascript(BOOKMARKS_DIR."/magnific-popup/dist/jquery.magnific-popup.min.js");
+
+		Requirements::add_i18n_javascript(BOOKMARKS_DIR."/javascript/lang");
 		Requirements::javascript(BOOKMARKS_DIR."/javascript/bookmarks.js");
 		Requirements::javascript(BOOKMARKS_DIR."/javascript/ajax_addBookmark.js");
 		Requirements::javascript(BOOKMARKS_DIR."/javascript/ajax_editBookmark.js");
-		Requirements::add_i18n_javascript(BOOKMARKS_DIR."/javascript/lang");
-
-		Requirements::customScript("
-			init_bookmarks();
-		");
 	}
 
 	public function bookmarksLink() {
