@@ -7,7 +7,7 @@ sk:
     URL: 'Url adresa'
   BookmarksWidget:
     CMSTITLE: Záložky
-    DESCRIPTION: 'Zobrazí záložky.'
+    DESCRIPTION: 'Zobrazí záložky aktuálne prihláseného používateľa.'
     TITLE: 'Moje záložky'
   Bookmarks_Controller:
     ADDBOOKMARK:

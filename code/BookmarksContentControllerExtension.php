@@ -27,10 +27,6 @@ class BookmarksContentControllerExtension extends Extension {
 		return singleton('Bookmarks_Controller')->Link('saveAll');
 	}
 
-	public function getMyBookmarks() {
-		return Bookmark::get()->filter('MemberID',Member::currentUserID());
-	}
-
 	public function isCurrentUrlInBookmarks($currentUrl = false) {
 		$url = null;
 		if ($currentUrl)

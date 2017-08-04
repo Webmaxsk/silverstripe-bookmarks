@@ -1,12 +1,6 @@
 <% if CurrentMember %>
 	<div id="member_bookmarks">
-		<ul id="bookmarks-sortable">
-			<% if MyBookmarks %>
-				<% loop MyBookmarks %>
-					$BookmarkHolder($Top.CurrentTitle,$Top.CurrentUrl)
-				<% end_loop %>
-			<% end_if %>
-		</ul>
+		<% include BookmarkList %>
 		<% include AddBookmark %>
 	</div>
 <% end_if %>
