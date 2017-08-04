@@ -1,0 +1,51 @@
+.showBookmarks .bookmark-star {
+  font-size: 0;
+  background-image: url('../images/bookmark-empty.png');
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+.showBookmarks .bookmark-star.filled {
+  background-image: url('../images/bookmark-filled.png');
+}
+
+#member_bookmarks #bookmarks-sortable {
+  margin: 20px 0;
+}
+
+#member_bookmarks .bookmark:before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#member_bookmarks .bookmark:before {
+  background-image: url('../images/link.png');
+}
+
+#member_bookmarks .editBookmark {
+  font-size: 0;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: top;
+  background-image: url('../images/pencil.png');
+  margin-left: 5px;
+}
+
+#member_bookmarks .addBookmark {
+  text-decoration: none;
+  display: inline-block;
+  border: 1px solid black;
+  color: black;
+  padding: 5px 15px;
+}
+
+#member_bookmarks .addBookmark:hover,
+#member_bookmarks .addBookmark:focus {
+  background: black;
+  color: white;
+}
