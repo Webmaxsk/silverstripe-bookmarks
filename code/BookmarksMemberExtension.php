@@ -15,7 +15,7 @@ class BookmarksMemberExtension extends DataExtension {
 			$labels = array_merge($labels, $field_labels);
 	}
 
-	public function getMyBookmarks($folderID = null) {
+	public function getMyBookmarks() {
 		return Bookmark::get()->filter('MemberID',Member::currentUserID());
 	}
 }
