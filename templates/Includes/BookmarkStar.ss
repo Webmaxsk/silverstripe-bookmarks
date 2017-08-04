@@ -1,1 +1,1 @@
-<span class="bookmark-star"><% if isCurrentUrlInBookmarks %><%t Bookmarks_Controller.PAGEISBOOKMARKED 'This page is bookmarked' %><% else %><%t Bookmarks_Controller.PAGEISNOTBOOKMARKED 'This page is not bookmarked' %><% end_if %></span>
+<span class="bookmark-star<% if isCurrentUrlInBookmarks %> filled<% end_if %>"><% if isCurrentUrlInBookmarks %><%t Bookmarks_Controller.PAGEISBOOKMARKED 'This page is bookmarked' %><% else %><%t Bookmarks_Controller.PAGEISNOTBOOKMARKED 'This page is not bookmarked' %><% end_if %></span>

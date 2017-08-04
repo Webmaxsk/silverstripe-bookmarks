@@ -1,3 +1,4 @@
+<% require themedCSS('bookmarks', 'silverstripe-bookmarks') %>
 <% if isAjax %>
 	<div class="white-popup">
 		<h2>$Title</h2>
@@ -5,7 +6,6 @@
 			<div>$Content</div>
 		<% end_if %>
 		$Form
-		<br>
 		<% include BookmarksMenu %>
 	</div>
 <% else %>
