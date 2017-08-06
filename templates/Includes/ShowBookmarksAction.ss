@@ -1,0 +1,1 @@
+<a href="$bookmarksLink?CurrentTitle=$CurrentTitle&CurrentUrl=$CurrentUrl" class="showBookmarks" title="<%t Bookmark.PLURALNAME 'Bookmarks' %>"><% include BookmarkStar %></a>

@@ -18,15 +18,14 @@ class Bookmark extends DataObject {
 	public function fieldLabels($includerelations = true) {
 		$cacheKey = $this->class . '_' . $includerelations;
 
-		if(!isset(self::$_cache_field_labels[$cacheKey])) {
+		if (!isset(self::$_cache_field_labels[$cacheKey])) {
 			$labels = parent::fieldLabels($includerelations);
 			$labels['Title'] = _t('Bookmark.TITLE', 'Title');
 			$labels['Url'] = _t('Bookmark.URL', 'Url');
 			$labels['Sort'] = _t('Bookmark.SORT', 'Sort');
 
-			if($includerelations) {
+			if ($includerelations)
 				$labels['Owner'] = _t('Member.SINGULARNAME', 'Member');
-			}
 
 			self::$_cache_field_labels[$cacheKey] = $labels;
 		}
@@ -37,14 +36,10 @@ class Bookmark extends DataObject {
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
 
-		if(
-			$this->Url
-			&& !parse_url($this->Url, PHP_URL_SCHEME)
-			&& !preg_match('#^//#', $this->Url)
-			&& !preg_match('#^/#', $this->Url)
-		) {
+		if ($this->Url
+		&& substr($this->Url, 0, 1) !== '/'
+		&& ($urlParts = parse_url($this->Url)) && empty($urlParts['scheme']))
 			$this->Url = 'http://' . $this->Url;
-		}
 	}
 
 	public function getCMSFields() {
@@ -65,10 +60,10 @@ class Bookmark extends DataObject {
 	}
 
 	public function getFrontEndValidator() {
-		$required = array();
-
-		$required[] = 'Title';
-		$required[] = 'Url';
+		$required = array(
+			'Title',
+			'Url'
+		);
 
 		return Bookmarks_Validator::create($required);
 	}
@@ -81,7 +76,7 @@ class Bookmark extends DataObject {
 		return $this->Title;
 	}
 
-	public function editBookmarkLink() {
+	public function editLink() {
 		return singleton('Bookmarks_Controller')->Link("editBookmark/{$this->ID}");
 	}
 
@@ -109,9 +104,9 @@ class Bookmark extends DataObject {
 		return true;
 	}
 
-	public function BookmarkHolder($currentTitle=null, $currentUrl=null) {
-		return $currentTitle!=null || $currentUrl!=null ? $this->customise(array('CurrentTitle'=>$currentTitle,'CurrentUrl'=>$currentUrl))->renderWith("BookmarkHolder") : $this->renderWith("BookmarkHolder");
-    }
+	public function BookmarkHolder($currentTitle = null, $currentUrl = null) {
+		return $currentTitle != null || $currentUrl != null ? $this->customise(array('CurrentTitle' => $currentTitle, 'CurrentUrl' => $currentUrl))->renderWith(__FUNCTION__) : $this->renderWith(__FUNCTION__);
+	}
 
 	public function forTemplate() {
 		return $this->BookmarkHolder();

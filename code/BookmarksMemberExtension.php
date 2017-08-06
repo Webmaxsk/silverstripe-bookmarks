@@ -11,12 +11,16 @@ class BookmarksMemberExtension extends DataExtension {
 
 		$field_labels['Bookmarks'] = _t('Bookmark.PLURALNAME', 'Bookmarks');
 
-		if($field_labels)
+		if ($field_labels)
 			$labels = array_merge($labels, $field_labels);
 	}
 
 	public function getMyBookmarks() {
-		return Bookmark::get()->filter('OwnerID', Member::currentUserID())->filterByCallback(function($item, $list) {
+		$filter = array(
+			'OwnerID' => Member::currentUserID()
+		);
+
+		return Bookmark::get()->filter($filter)->filterByCallback(function($item, $list) {
 			return $item->canView();
 		});
 	}
