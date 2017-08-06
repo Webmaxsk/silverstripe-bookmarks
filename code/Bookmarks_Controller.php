@@ -95,7 +95,7 @@ class Bookmarks_Controller extends Page_Controller {
 			$title = $currentTitle;
 
 		$url = null;
-		if ($currentUrl = $this->CurrentUrl())
+		if ($currentUrl = urldecode($this->CurrentUrl()))
 			$url = $currentUrl;
 
 		$fields->push(new HiddenField('CurrentTitle', null, $title));
@@ -191,7 +191,7 @@ class Bookmarks_Controller extends Page_Controller {
 		$form->loadDataFrom($bookmark);
 
 		$form->fields()->push(new HiddenField('CurrentTitle', null, $this->CurrentTitle()));
-		$form->fields()->push(new HiddenField('CurrentUrl', null, $this->CurrentUrl()));
+		$form->fields()->push(new HiddenField('CurrentUrl', null, urldecode($this->CurrentUrl())));
 
 		return $form;
 	}
