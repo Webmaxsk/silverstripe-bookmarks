@@ -29,11 +29,26 @@ function open_mfp_popup_ajax(items_source) {
 
 function sortable_bookmarks(saveAllBookmarksLink) {
   $('#bookmarks-sortable').sortable({
-    cursor: 'move',
-    placeholder: 'bookmark-placeholder',
-    forcePlaceholderSize: true,
     axis: 'y',
+    cursor: 'move',
+    helper: 'clone',
+    placeholder: 'bookmark-placeholder',
+    start: function(event, ui) {
+      ui.item.addClass('bookmark-sort-active').show();
+    },
+    change: function(event, ui) {
+      var currentID = ui.item.data('id');
+      var prevID = ui.placeholder.prev().data('id');
+      var nextID = ui.placeholder.next(':not(.ui-sortable-helper)').data('id');
+
+      if (currentID != prevID && currentID != nextID)
+        ui.placeholder.addClass('bookmark-placeholder-highlighted');
+      else
+        ui.placeholder.removeClass('bookmark-placeholder-highlighted');
+    },
     stop: function(event, ui) {
+      ui.item.removeClass('bookmark-sort-active');
+
       $.ajax({
         data: $(this).sortable('serialize'),
         type: 'POST',

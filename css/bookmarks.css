@@ -1,3 +1,4 @@
+/* star */
 .showBookmarks .bookmark-star {
   font-size: 0;
   background-image: url('../images/bookmark-empty.png');
@@ -10,33 +11,71 @@
   background-image: url('../images/bookmark-filled.png');
 }
 
+/* bookmarks */
 #member_bookmarks #bookmarks-sortable {
   margin: 20px 0;
+  padding: 0;
+  list-style: none;
+  float: left;
+  position: relative;
 }
 
-#member_bookmarks .bookmark:before {
+#member_bookmarks #bookmarks-sortable .bookmark:before {
   content: "";
   width: 16px;
   height: 16px;
   display: inline-block;
   margin-right: 10px;
+  vertical-align: middle;
 }
 
-#member_bookmarks .bookmark:before {
+#member_bookmarks #bookmarks-sortable .bookmark:before {
   background-image: url('../images/link.png');
 }
 
-#member_bookmarks .editBookmark {
+#member_bookmarks #bookmarks-sortable .bookmark.bookmark-sort-active {
+  font-weight: bold;
+}
+
+#member_bookmarks #bookmarks-sortable .editBookmark {
   font-size: 0;
   width: 16px;
   height: 16px;
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
   background-image: url('../images/pencil.png');
   margin-left: 5px;
 }
 
-#member_bookmarks .addBookmark {
+/* helper */
+#member_bookmarks #bookmarks-sortable .bookmark.ui-sortable-helper .editBookmark {
+  display: none;
+}
+
+/* placeholder */
+#member_bookmarks #bookmarks-sortable .bookmark-placeholder {
+  height: 0;
+  position: relative;
+  float: left;
+  width: 100%;
+}
+
+#member_bookmarks #bookmarks-sortable .bookmark-placeholder.bookmark-placeholder-highlighted:before {
+  content: "";
+  background: black;
+  width: 100%;
+  height: 1px;
+  display: block;
+  position: absolute;
+  top: -1px;
+}
+
+/* actions */
+#member_bookmarks #bookmarks-actions {
+  clear: left;
+}
+
+#member_bookmarks #bookmarks-actions .addBookmark {
   text-decoration: none;
   display: inline-block;
   border: 1px solid black;
@@ -44,8 +83,8 @@
   padding: 5px 15px;
 }
 
-#member_bookmarks .addBookmark:hover,
-#member_bookmarks .addBookmark:focus {
+#member_bookmarks #bookmarks-actions .addBookmark:hover,
+#member_bookmarks #bookmarks-actions .addBookmark:focus {
   background: black;
   color: white;
 }
