@@ -10,7 +10,7 @@ class Bookmark extends DataObject {
 	);
 
 	private static $has_one = array(
-		'Member' => 'Member'
+		'Owner' => 'Member'
 	);
 
 	private static $default_sort = 'Sort Asc';
@@ -25,7 +25,7 @@ class Bookmark extends DataObject {
 			$labels['Sort'] = _t('Bookmark.SORT', 'Sort');
 
 			if($includerelations) {
-				$labels['Member'] = _t('Member.SINGULARNAME', 'Member');
+				$labels['Owner'] = _t('Member.SINGULARNAME', 'Member');
 			}
 
 			self::$_cache_field_labels[$cacheKey] = $labels;
@@ -86,7 +86,7 @@ class Bookmark extends DataObject {
 	}
 
 	protected function isOwner($member = null) {
-		return ($member || ($member = Member::currentUser())) && $member->ID == $this->MemberID;
+		return ($member || ($member = Member::currentUser())) && $member->ID == $this->OwnerID;
 	}
 
 	protected function isAdmin() {
@@ -98,7 +98,7 @@ class Bookmark extends DataObject {
 	}
 
 	public function canEdit($member = null) {
-		return $this->IsOwner($member) || $this->isAdmin();
+		return $this->isOwner($member) || $this->isAdmin();
 	}
 
 	public function BookmarkHolder($currentTitle=null, $currentUrl=null) {
