@@ -16,6 +16,6 @@ class BookmarksMemberExtension extends DataExtension {
 	}
 
 	public function getMyBookmarks() {
-		return Bookmark::get()->filter('MemberID',Member::currentUserID());
+		return Bookmark::get()->filter('OwnerID',Member::currentUserID());
 	}
 }

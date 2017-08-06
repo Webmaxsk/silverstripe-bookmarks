@@ -118,7 +118,7 @@ class Bookmarks_Controller extends Page_Controller {
 
 		$bookmark->Title = $data['Title'];
 		$bookmark->Url = $data['Url'];
-		$bookmark->MemberID = Member::currentUserID();
+		$bookmark->OwnerID = Member::currentUserID();
 
 		$lastID = 0;
 		if (($bookmarks = Bookmark::get()) && $bookmarks->count())
