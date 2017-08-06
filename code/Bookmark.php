@@ -93,12 +93,20 @@ class Bookmark extends DataObject {
 		return Permission::check('ADMIN');
 	}
 
-	public function canEditCurrent() {
-		return $this->canEdit(Member::currentUser());
+	public function canView($member = null) {
+		return $this->isOwner($member) || $this->isAdmin() || !$this->exists();
 	}
 
 	public function canEdit($member = null) {
+		return $this->isOwner($member) || $this->isAdmin() || !$this->exists();
+	}
+
+	public function canDelete($member = null) {
 		return $this->isOwner($member) || $this->isAdmin();
+	}
+
+	public function canCreate($member = null) {
+		return true;
 	}
 
 	public function BookmarkHolder($currentTitle=null, $currentUrl=null) {

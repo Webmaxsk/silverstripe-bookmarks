@@ -44,7 +44,9 @@ class BookmarksContentControllerExtension extends Extension {
 			$url = 'http://' . $url;
 		}
 
-		return DataObject::get_one('Bookmark', array('Url' => $url, 'OwnerID' => Member::currentUserID())) ? true : false;
+		return Bookmark::get()->filter(array('Url' => $url, 'OwnerID' => Member::currentUserID()))->filterByCallback(function($item, $list) {
+			return $item->canView();
+		})->exists();
 	}
 
 	public function CurrentUrl() {

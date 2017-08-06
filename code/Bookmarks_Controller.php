@@ -3,8 +3,8 @@
 class Bookmarks_Controller extends Page_Controller {
 
 	private static $allowed_actions = array(
-		'addBookmark',
-		'editBookmark' => '->canEditBookmark',
+		'addBookmark' => '->canAddBookmark',
+		'editBookmark' => '->canEditOrDeleteBookmark',
 		'saveAll',
 
 		'AddBookmarkForm',
@@ -116,47 +116,51 @@ class Bookmarks_Controller extends Page_Controller {
 	public function doAddBookmark($data, $form) {
 		$bookmark = Bookmark::create();
 
-		$bookmark->Title = $data['Title'];
-		$bookmark->Url = $data['Url'];
-		$bookmark->OwnerID = Member::currentUserID();
+		if ($bookmark->canCreate()) {
+			$bookmark->Title = $data['Title'];
+			$bookmark->Url = $data['Url'];
+			$bookmark->OwnerID = Member::currentUserID();
 
-		$lastID = 0;
-		if (($bookmarks = Bookmark::get()) && $bookmarks->count())
-			$lastID = $bookmarks->last()->Sort;
+			$lastID = 0;
+			if (($bookmarks = Bookmark::get()) && $bookmarks->count())
+				$lastID = $bookmarks->last()->Sort;
 
-		$bookmark->Sort = ++$lastID;
+			$bookmark->Sort = ++$lastID;
 
-		$bookmark->write();
+			$bookmark->write();
 
-		if ($this->request->isAjax()) {
-			$BookmarksLink = $this->Link();
-			if (isset($data['CurrentTitle']))
-				$BookmarksLinkParams[] = "CurrentTitle={$data['CurrentTitle']}";
+			if ($this->request->isAjax()) {
+				$BookmarksLink = $this->Link();
+				if (isset($data['CurrentTitle']))
+					$BookmarksLinkParams[] = "CurrentTitle={$data['CurrentTitle']}";
 
-			$currentUrl = null;
-			if (isset($data['CurrentUrl'])) {
-				$currentUrl = $data['CurrentUrl'];
-				$BookmarksLinkParams[] = "CurrentUrl={$currentUrl}";
+				$currentUrl = null;
+				if (isset($data['CurrentUrl'])) {
+					$currentUrl = $data['CurrentUrl'];
+					$BookmarksLinkParams[] = "CurrentUrl={$currentUrl}";
+				}
+
+				if (count($BookmarksLinkParams))
+					$BookmarksLink .= "?".implode('&', $BookmarksLinkParams);
+
+				return json_encode(array(
+					'Message' => _t('Bookmarks_Controller.BOOKMARKADDED', 'Bookmark added'),
+					'Type' => 'good',
+					'BookmarksLink' => $BookmarksLink,
+					'BookmarkID' => $bookmark->ID,
+					'Bookmark' => $bookmark->forTemplate()->getValue(),
+					'BookmarkStar' => $this->customise(array('isCurrentUrlInBookmarks'=>$this->isCurrentUrlInBookmarks($currentUrl)))->renderWith(array('BookmarkStar'))->getValue(),
+					'BookmarkWidget' => $this->customise(array('Bookmarks'=>singleton('BookmarksWidget')->getBookmarks()))->renderWith(array('BookmarksWidget'))->getValue()
+				));
 			}
+			else {
+				$this->NullForm()->sessionMessage(_t('Bookmarks_Controller.BOOKMARKADDED', 'Bookmark added'), 'good');
 
-			if (count($BookmarksLinkParams))
-				$BookmarksLink .= "?".implode('&', $BookmarksLinkParams);
-
-			return json_encode(array(
-				'Message' => _t('Bookmarks_Controller.BOOKMARKADDED', 'Bookmark added'),
-				'Type' => 'good',
-				'BookmarksLink' => $BookmarksLink,
-				'BookmarkID' => $bookmark->ID,
-				'Bookmark' => $bookmark->forTemplate()->getValue(),
-				'BookmarkStar' => $this->customise(array('isCurrentUrlInBookmarks'=>$this->isCurrentUrlInBookmarks($currentUrl)))->renderWith(array('BookmarkStar'))->getValue(),
-				'BookmarkWidget' => $this->customise(array('Bookmarks'=>singleton('BookmarksWidget')->getBookmarks()))->renderWith(array('BookmarksWidget'))->getValue()
-			));
+				return $this->redirect($this->Link());
+			}
 		}
-		else {
-			$this->NullForm()->sessionMessage(_t('Bookmarks_Controller.BOOKMARKADDED', 'Bookmark added'), 'good');
 
-			return $this->redirect($this->Link());
-		}
+		return $this->redirectBack();
 	}
 
 	public function editBookmark() {
@@ -185,10 +189,12 @@ class Bookmarks_Controller extends Page_Controller {
 		$fields = $bookmark->getFrontEndFields();
 		$fields->push(new HiddenField('ID'));
 
-		$actions = new FieldList(
-			FormAction::create('doEditBookmark', _t('Bookmarks_Controller.SAVEBOOKMARK.ACTION', 'Save')),
-			FormAction::create('doDeleteBookmark', _t('Bookmarks_Controller.DELETEBOOKMARK.ACTION', 'Delete'))
-		);
+		$actions = new FieldList();
+		if ($bookmark->canEdit())
+			$actions->push(FormAction::create('doEditBookmark', _t('Bookmarks_Controller.SAVEBOOKMARK.ACTION', 'Save')));
+
+		if ($bookmark->canDelete())
+			$actions->push(FormAction::create('doDeleteBookmark', _t('Bookmarks_Controller.DELETEBOOKMARK.ACTION', 'Delete')));
 
 		$validator = $bookmark->getFrontEndValidator();
 
@@ -202,7 +208,7 @@ class Bookmarks_Controller extends Page_Controller {
 	}
 
 	public function doEditBookmark($data, $form) {
-		if (isset($data['ID']) && ($ID = $data['ID']) && is_numeric($ID) && ($bookmark = DataObject::get_by_id('Bookmark',$ID)) && $bookmark->canEditCurrent()) {
+		if (isset($data['ID']) && ($ID = $data['ID']) && is_numeric($ID) && ($bookmark = DataObject::get_by_id('Bookmark',$ID)) && $bookmark->canEdit()) {
 
 			$form->saveInto($bookmark);
 
@@ -243,7 +249,7 @@ class Bookmarks_Controller extends Page_Controller {
 	}
 
 	public function doDeleteBookmark($data, $form) {
-		if (isset($data['ID']) && ($ID = $data['ID']) && is_numeric($ID) && ($bookmark = DataObject::get_by_id('Bookmark',$ID)) && $bookmark->canEditCurrent()) {
+		if (isset($data['ID']) && ($ID = $data['ID']) && is_numeric($ID) && ($bookmark = DataObject::get_by_id('Bookmark',$ID)) && $bookmark->canDelete()) {
 
 			$bookmark->delete();
 
@@ -284,8 +290,8 @@ class Bookmarks_Controller extends Page_Controller {
 		if ($bookmarks = $this->request->postVar('bookmark')) {
 			$i = 0;
 
-			foreach ($bookmarks as $id) {
-				if ($bookmark = DataObject::get_by_id('Bookmark',$id)) {
+			foreach ($bookmarks as $bookmarkID) {
+				if (($bookmark = DataObject::get_one('Bookmark', array('ID' => $bookmarkID, 'OwnerID' => Member::currentUserID()))) && $bookmark->canEdit()) {
 					$bookmark->Sort = $i++;
 					$bookmark->write();
 				}
@@ -299,7 +305,11 @@ class Bookmarks_Controller extends Page_Controller {
 	    return Controller::join_links(Director::baseURL().'bookmarks', $action);
 	}
 
-	public function canEditBookmark() {
-		return ($ID = $this->request->param('ID')) && is_numeric($ID) && ($bookmark = DataObject::get_by_id('Bookmark',$ID)) && $bookmark->canEditCurrent();
+	public function canAddBookmark() {
+		return singleton('Bookmark')->canCreate();
+	}
+
+	public function canEditOrDeleteBookmark() {
+		return ($ID = $this->request->param('ID')) && is_numeric($ID) && ($bookmark = DataObject::get_by_id('Bookmark',$ID)) && ($bookmark->canEdit() || $bookmark->canDelete());
 	}
 }
