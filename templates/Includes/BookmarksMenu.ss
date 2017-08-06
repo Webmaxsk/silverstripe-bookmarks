@@ -1,26 +1,11 @@
 <% if CurrentMember %>
 	<div id="member_bookmarks">
 		<% include BookmarkList %>
-		<% include AddBookmark %>
+		<% include BookmarkActions %>
 	</div>
+	<% if isAjax %>
+		<script type="text/javascript">
+			sortable_bookmarks('$saveAllBookmarksLink');
+		</script>
+	<% end_if %>
 <% end_if %>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#bookmarks-sortable').sortable({
-			cursor: 'move',
-			placeholder: 'bookmark-placeholder',
-			forcePlaceholderSize: true,
-			axis: 'y',
-			stop: function( event, ui ) {
-				$.ajax({
-					data: $(this).sortable('serialize'),
-					type: 'POST',
-					url: '$saveAllBookmarksLink',
-					success: function(data) {
-						$('.BookmarksWidget .bookmark-list').replaceWith(data);
-					}
-				});
-			}
-		});
-	});
-</script>

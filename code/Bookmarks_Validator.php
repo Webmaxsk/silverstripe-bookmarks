@@ -5,7 +5,7 @@ class Bookmarks_Validator extends RequiredFields {
 	/* fix for betterbuttons */
 	private function canValid() {
 		if (class_exists('BetterButton'))
-			return $this->form->buttonClicked() && $this->form->buttonClicked()->actionName()!="doDelete";
+			return $this->form->buttonClicked() && $this->form->buttonClicked()->actionName() != "doDelete";
 		else
 			return true;
 	}
