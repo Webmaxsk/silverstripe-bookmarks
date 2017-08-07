@@ -88,3 +88,17 @@
   background: black;
   color: white;
 }
+
+/* widget */
+.WidgetHolder.BookmarksWidget .bookmark-list .Bookmark:before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.WidgetHolder.BookmarksWidget .bookmark-list .Bookmark:before {
+  background-image: url('../images/link.png');
+}
