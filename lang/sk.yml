@@ -1,5 +1,6 @@
 sk:
   Bookmark:
+    OWNER: Vlastník
     PLURALNAME: Záložky
     SINGULARNAME: Záložka
     SORT: 'Poradie zoradenia'

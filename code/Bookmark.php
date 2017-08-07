@@ -13,6 +13,18 @@ class Bookmark extends DataObject {
 		'Owner' => 'Member'
 	);
 
+	private static $searchable_fields = array(
+		'Title',
+		'Url',
+		'Owner.ID'
+	);
+
+	private static $summary_fields = array(
+		'Title',
+		'Url',
+		'Owner.Name'
+	);
+
 	private static $default_sort = 'Sort Asc';
 
 	public function fieldLabels($includerelations = true) {
@@ -23,6 +35,8 @@ class Bookmark extends DataObject {
 			$labels['Title'] = _t('Bookmark.TITLE', 'Title');
 			$labels['Url'] = _t('Bookmark.URL', 'Url');
 			$labels['Sort'] = _t('Bookmark.SORT', 'Sort');
+			$labels['Owner.ID'] = _t('Bookmark.OWNER', 'Owner');
+			$labels['Owner.Name'] = _t('Bookmark.OWNER', 'Owner');
 
 			if ($includerelations)
 				$labels['Owner'] = _t('Member.SINGULARNAME', 'Member');
@@ -35,17 +49,25 @@ class Bookmark extends DataObject {
 
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
+		$this->IsCreating = !$this->ID;
 
 		if ($this->Url
 		&& substr($this->Url, 0, 1) !== '/'
 		&& ($urlParts = parse_url($this->Url)) && empty($urlParts['scheme']))
 			$this->Url = 'http://' . $this->Url;
+
+		if ($this->IsCreating && $this->OwnerID)
+			$this->Sort = ($maxSort = Bookmark::get()->filter('OwnerID', $this->OwnerID)->max('Sort')) ? ++$maxSort : 1;
 	}
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		$fields->removeByName('Sort');
+		if ($this->ID)
+			$fields->replaceField('OwnerID', $fields->dataFieldByName('OwnerID')->performReadonlyTransformation());
+
+		if (class_exists('GridFieldSortableRows') || class_exists('GridFieldOrderableRows'))
+			$fields->removeByName('Sort');
 
 		return $fields;
 	}
