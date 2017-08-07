@@ -122,12 +122,6 @@ class Bookmarks_Controller extends Page_Controller {
 		$bookmark->Url = $data['Url'];
 		$bookmark->OwnerID = $this->currentUserID;
 
-		$lastID = 0;
-		if (($myBookmarks = Bookmark::get()->filter('OwnerID', $this->currentUserID)) && $myBookmarks->exists())
-			$lastID = $myBookmarks->last()->Sort;
-
-		$bookmark->Sort = ++$lastID;
-
 		$bookmark->write();
 
 		$bookmarksLink = $this->BookmarksLinkWithParams($data);
@@ -250,7 +244,7 @@ class Bookmarks_Controller extends Page_Controller {
 	public function saveAllBookmarks() {
 		if ($bookmarks = $this->request->postVar('bookmark')) {
 			foreach ($bookmarks as $index => $bookmarkID)
-				if (($bookmark = DataObject::get_one('Bookmark', array('ID' => $bookmarkID, 'OwnerID' => $this->currentUserID))) && $bookmark->canEdit() && $bookmark->Sort != $index) {
+				if (($bookmark = DataObject::get_one('Bookmark', array('ID' => $bookmarkID, 'OwnerID' => $this->currentUserID))) && $bookmark->canEdit() && $bookmark->Sort != ++$index) {
 					$bookmark->Sort = $index;
 					$bookmark->write();
 				}

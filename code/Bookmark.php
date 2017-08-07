@@ -49,11 +49,15 @@ class Bookmark extends DataObject {
 
 	public function onBeforeWrite() {
 		parent::onBeforeWrite();
+		$this->IsCreating = !$this->ID;
 
 		if ($this->Url
 		&& substr($this->Url, 0, 1) !== '/'
 		&& ($urlParts = parse_url($this->Url)) && empty($urlParts['scheme']))
 			$this->Url = 'http://' . $this->Url;
+
+		if ($this->IsCreating && $this->OwnerID)
+			$this->Sort = ($maxSort = Bookmark::get()->filter('OwnerID', $this->OwnerID)->max('Sort')) ? ++$maxSort : 1;
 	}
 
 	public function getCMSFields() {
