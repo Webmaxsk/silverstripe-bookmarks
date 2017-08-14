@@ -14,6 +14,9 @@
 		"silverstripe/cms": "~3.1",
 		"dimsemenov/magnific-popup": "1.1.0"
 	},
+	"suggest": {
+		"silverstripe-australia/gridfieldextensions": "A collection of useful grid field components"
+	},
 	"extra": {
 		"installer-name": "silverstripe-bookmarks"
 	}

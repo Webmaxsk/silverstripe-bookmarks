@@ -1,7 +1,7 @@
 <ul id="bookmarks-sortable">
 	<% with CurrentMember %>
-		<% if MyBookmarks %>
-			<% loop MyBookmarks %>
+		<% if getMyBookmarks($Top.CurrentBookmarkFolder.ID) %>
+			<% loop getMyBookmarks($Top.CurrentBookmarkFolder.ID) %>
 				$BookmarkHolder($Top.CurrentTitle,$Top.CurrentUrl)
 			<% end_loop %>
 		<% end_if %>

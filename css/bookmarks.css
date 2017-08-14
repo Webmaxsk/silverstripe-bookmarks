@@ -11,6 +11,22 @@
   background-image: url('../images/bookmark-filled.png');
 }
 
+/* breadcrumbs */
+#member_bookmarks #bookmarks-breadcrumbs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#member_bookmarks #bookmarks-breadcrumbs > li {
+  display: inline-block;
+}
+
+/* generally */
+#member_bookmarks .bookmarkFolder.bookmarkFolder-hovered {
+  font-weight: bold;
+}
+
 /* bookmarks */
 #member_bookmarks #bookmarks-sortable {
   margin: 20px 0;
@@ -20,7 +36,16 @@
   position: relative;
 }
 
-#member_bookmarks #bookmarks-sortable .bookmark:before {
+#member_bookmarks #bookmarks-sortable .bookmark,
+#member_bookmarks #bookmarks-sortable .bookmarkFolder {
+  margin: 5px 0;
+  clear: left;
+  float: left;
+  width: 100%;
+}
+
+#member_bookmarks #bookmarks-sortable .bookmark:before,
+#member_bookmarks #bookmarks-sortable .bookmarkFolder:before {
   content: "";
   width: 16px;
   height: 16px;
@@ -33,11 +58,17 @@
   background-image: url('../images/link.png');
 }
 
-#member_bookmarks #bookmarks-sortable .bookmark.bookmark-sort-active {
+#member_bookmarks #bookmarks-sortable .bookmarkFolder:before {
+  background-image: url('../images/folder.png');
+}
+
+#member_bookmarks #bookmarks-sortable .bookmark.bookmark-sort-active,
+#member_bookmarks #bookmarks-sortable .bookmarkFolder.bookmark-sort-active {
   font-weight: bold;
 }
 
-#member_bookmarks #bookmarks-sortable .editBookmark {
+#member_bookmarks #bookmarks-sortable .bookmark .editBookmark,
+#member_bookmarks #bookmarks-sortable .bookmarkFolder .editBookmarkFolder {
   font-size: 0;
   width: 16px;
   height: 16px;
@@ -45,11 +76,6 @@
   vertical-align: middle;
   background-image: url('../images/pencil.png');
   margin-left: 5px;
-}
-
-/* helper */
-#member_bookmarks #bookmarks-sortable .bookmark.ui-sortable-helper .editBookmark {
-  display: none;
 }
 
 /* placeholder */
@@ -75,7 +101,8 @@
   clear: left;
 }
 
-#member_bookmarks #bookmarks-actions .addBookmark {
+#member_bookmarks #bookmarks-actions .addBookmark,
+#member_bookmarks #bookmarks-actions .addBookmarkFolder {
   text-decoration: none;
   display: inline-block;
   border: 1px solid black;
@@ -84,13 +111,16 @@
 }
 
 #member_bookmarks #bookmarks-actions .addBookmark:hover,
-#member_bookmarks #bookmarks-actions .addBookmark:focus {
+#member_bookmarks #bookmarks-actions .addBookmark:focus,
+#member_bookmarks #bookmarks-actions .addBookmarkFolder:hover,
+#member_bookmarks #bookmarks-actions .addBookmarkFolder:focus {
   background: black;
   color: white;
 }
 
 /* widget */
-.WidgetHolder.BookmarksWidget .bookmark-list .Bookmark:before {
+.WidgetHolder.BookmarksWidget .bookmark-list .Bookmark:before,
+.WidgetHolder.BookmarksWidget .bookmark-list .BookmarkFolder:before {
   content: "";
   width: 16px;
   height: 16px;
@@ -101,4 +131,41 @@
 
 .WidgetHolder.BookmarksWidget .bookmark-list .Bookmark:before {
   background-image: url('../images/link.png');
+}
+
+.WidgetHolder.BookmarksWidget .bookmark-list .BookmarkFolder:before {
+  background-image: url('../images/folder.png');
+}
+
+/* helper */
+.bookmark.ui-sortable-helper,
+.bookmarkFolder.ui-sortable-helper {
+  list-style: none;
+  margin: 5px 0;
+  clear: left;
+  float: left;
+  width: 100%;
+}
+
+.bookmark.ui-sortable-helper:before,
+.bookmarkFolder.ui-sortable-helper:before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.bookmark.ui-sortable-helper:before {
+  background-image: url('../images/link.png');
+}
+
+.bookmarkFolder.ui-sortable-helper:before {
+  background-image: url('../images/folder.png');
+}
+
+.bookmark.ui-sortable-helper .editBookmark,
+.bookmarkFolder.ui-sortable-helper .editBookmarkFolder {
+  display: none;
 }

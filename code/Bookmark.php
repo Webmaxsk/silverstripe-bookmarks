@@ -10,7 +10,8 @@ class Bookmark extends DataObject {
 	);
 
 	private static $has_one = array(
-		'Owner' => 'Member'
+		'Owner' => 'Member',
+		'Parent' => 'BookmarkFolder'
 	);
 
 	private static $searchable_fields = array(
@@ -20,6 +21,7 @@ class Bookmark extends DataObject {
 	);
 
 	private static $summary_fields = array(
+		'i18n_singular_name',
 		'Title',
 		'Url',
 		'Owner.Name'
@@ -32,14 +34,17 @@ class Bookmark extends DataObject {
 
 		if (!isset(self::$_cache_field_labels[$cacheKey])) {
 			$labels = parent::fieldLabels($includerelations);
+			$labels['i18n_singular_name'] = _t('Bookmark.TYPE', 'Type');
 			$labels['Title'] = _t('Bookmark.TITLE', 'Title');
 			$labels['Url'] = _t('Bookmark.URL', 'Url');
 			$labels['Sort'] = _t('Bookmark.SORT', 'Sort');
 			$labels['Owner.ID'] = _t('Bookmark.OWNER', 'Owner');
 			$labels['Owner.Name'] = _t('Bookmark.OWNER', 'Owner');
 
-			if ($includerelations)
-				$labels['Owner'] = _t('Member.SINGULARNAME', 'Member');
+			if ($includerelations) {
+				$labels['Owner'] = _t('Bookmark.OWNER', 'Owner');
+				$labels['Parent'] = _t('BookmarkFolder.SINGULARNAME', 'Folder');
+			}
 
 			self::$_cache_field_labels[$cacheKey] = $labels;
 		}
@@ -57,14 +62,19 @@ class Bookmark extends DataObject {
 			$this->Url = 'http://' . $this->Url;
 
 		if ($this->IsCreating && $this->OwnerID)
-			$this->Sort = ($maxSort = Bookmark::get()->filter('OwnerID', $this->OwnerID)->max('Sort')) ? ++$maxSort : 1;
+			$this->Sort = ($maxSort = Bookmark::get()->filter(array(
+				'OwnerID' => $this->OwnerID,
+				'ParentID' => $this->ParentID ?: 0
+			))->max('Sort')) ? ++$maxSort : 1;
 	}
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		if ($this->ID)
+		if ($this->ID) {
 			$fields->replaceField('OwnerID', $fields->dataFieldByName('OwnerID')->performReadonlyTransformation());
+			$fields->replaceField('ParentID', $fields->dataFieldByName('ParentID')->performReadonlyTransformation());
+		}
 
 		if (class_exists('GridFieldSortableRows') || class_exists('GridFieldOrderableRows'))
 			$fields->removeByName('Sort');
@@ -99,7 +109,7 @@ class Bookmark extends DataObject {
 	}
 
 	public function editLink() {
-		return singleton('Bookmarks_Controller')->Link("editBookmark/{$this->ID}");
+		return Controller::curr()->Link("editBookmark/{$this->ID}");
 	}
 
 	protected function isOwner($member = null) {

@@ -6,6 +6,11 @@ sk:
     SORT: 'Poradie zoradenia'
     TITLE: Názov
     URL: 'Url adresa'
+    TYPE: Typ
+  BookmarkFolder:
+    PLURALNAME: Priečinky
+    SINGULARNAME: Priečinok
+    TITLE: Názov
   BookmarksWidget:
     CMSTITLE: Záložky
     DESCRIPTION: 'Zobrazí záložky aktuálne prihláseného používateľa.'
@@ -14,16 +19,30 @@ sk:
     ADDBOOKMARK:
       ACTION: Pridať
       TITLE: 'Pridať záložku'
+    ADDBOOKMARKFOLDER:
+      ACTION: 'Pridať'
+      TITLE: 'Pridať priečinok'
+    ALLBOOKMARKS: 'Všetky záložky'
     BOOKMARKADDED: 'Záložka pridaná'
     BOOKMARKDELETED: 'Záložka vymazaná'
+    BOOKMARKFOLDERADDED: 'Priečinok pridaný'
+    BOOKMARKFOLDERDELETED: 'Priečinok vymazaný'
+    BOOKMARKFOLDERSAVED: 'Priečinok uložený'
     BOOKMARKSAVED: 'Záložka uložená'
     BOOKMARKSTITLE: Záložky
     DELETEBOOKMARK:
       ACTION: Vymazať
+    DELETEBOOKMARKFOLDER:
+      ACTION: Vymazať
     EDITBOOKMARK:
       ACTION: Upraviť
       TITLE: 'Upraviť záložku'
+    EDITBOOKMARKFOLDER:
+      ACTION: Upraviť
+      TITLE: 'Upraviť priečinok'
     PAGEISBOOKMARKED: 'Stránka sa nachádza v záložkách'
     PAGEISNOTBOOKMARKED: 'Stránka nie je v záložkách'
     SAVEBOOKMARK:
+      ACTION: Uložiť
+    SAVEBOOKMARKFOLDER:
       ACTION: Uložiť

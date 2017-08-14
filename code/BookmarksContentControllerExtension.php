@@ -14,11 +14,13 @@ class BookmarksContentControllerExtension extends Extension {
 		Requirements::add_i18n_javascript(BOOKMARKS_DIR . '/javascript/lang');
 		Requirements::javascript(BOOKMARKS_DIR . '/javascript/bookmarks.js');
 		Requirements::javascript(BOOKMARKS_DIR . '/javascript/ajax_addBookmark.js');
+		Requirements::javascript(BOOKMARKS_DIR . '/javascript/ajax_addBookmarkFolder.js');
 		Requirements::javascript(BOOKMARKS_DIR . '/javascript/ajax_editBookmark.js');
+		Requirements::javascript(BOOKMARKS_DIR . '/javascript/ajax_editBookmarkFolder.js');
 
 		if (!$this->owner->request->isAjax())
 			Requirements::customScript(<<<js
-				sortable_bookmarks('{$this->saveAllBookmarksLink()}');
+				sortable_and_droppable_bookmarks('{$this->saveAllBookmarksLink()}', '{$this->moveBookmarkToBookmarkFolderLink()}');
 js
 );
 	}
@@ -28,11 +30,19 @@ js
 	}
 
 	public function addBookmarkLink() {
-		return singleton('Bookmarks_Controller')->Link('addBookmark');
+		return Controller::curr()->Link('addBookmark');
+	}
+
+	public function addBookmarkFolderLink() {
+		return Controller::curr()->Link('addBookmarkFolder');
 	}
 
 	public function saveAllBookmarksLink() {
 		return singleton('Bookmarks_Controller')->Link('saveAllBookmarks');
+	}
+
+	public function moveBookmarkToBookmarkFolderLink() {
+		return singleton('Bookmarks_Controller')->Link('moveBookmarkToBookmarkFolder');
 	}
 
 	public function isCurrentUrlInBookmarks($currentUrl = false) {

@@ -17,6 +17,8 @@ class BookmarksMemberExtension extends DataExtension {
 
 	public function updateCMSFields(FieldList $fields) {
 		if ($bookmarksGridField = $fields->dataFieldByName('Bookmarks')) {
+			$bookmarksGridField->setList($this->owner->getMyBookmarks());
+
 			$bookmarksGridFieldConfig = $bookmarksGridField->getConfig();
 
 			if (class_exists('GridFieldSortableRows'))
@@ -25,9 +27,25 @@ class BookmarksMemberExtension extends DataExtension {
 				$bookmarksGridFieldConfig->addComponent(new GridFieldOrderableRows('Sort'));
 
 			$bookmarksGridFieldConfig
-				->removeComponentsByType($bookmarksGridFieldConfig->getComponentByType('GridFieldAddExistingAutocompleter'))
-				->removeComponentsByType($bookmarksGridFieldConfig->getComponentByType('GridFieldDeleteAction'))
-				->addComponent(new GridFieldDeleteAction());
+				->removeComponentsByType('GridFieldAddExistingAutocompleter')
+				->removeComponentsByType('GridFieldDeleteAction')
+				->addComponents(new GridFieldDeleteAction())
+				->getComponentByType('GridFieldDetailForm')
+					->setItemEditFormCallback(function($form, $component) {
+						if (($record = $form->getRecord()) && !$record->exists()) {
+							$fields = $form->Fields();
+
+							if ($parentField = $fields->dataFieldByName('ParentID'))
+								$fields->makeFieldReadonly('ParentID');
+						}
+					});
+
+			if (class_exists('GridFieldAddNewMultiClass'))
+				$bookmarksGridFieldConfig
+					->removeComponentsByType('GridFieldAddNewButton')
+					->addComponent(new GridFieldAddNewMultiClass())
+					->getComponentByType('GridFieldDetailForm')
+						->setValidator(singleton('Bookmark')->getCMSValidator());
 
 			$bookmarksDisplayFields = $bookmarksGridFieldConfig
 				->getComponentByType('GridFieldDataColumns')->getDisplayFields($bookmarksGridField);
@@ -38,10 +56,15 @@ class BookmarksMemberExtension extends DataExtension {
 		}
 	}
 
-	public function getMyBookmarks() {
+	public function getMyBookmarks($bookmarkFolderID = null) {
 		$filter = array(
 			'OwnerID' => Member::currentUserID()
 		);
+
+		if ($bookmarkFolderID)
+			$filter['ParentID'] = $bookmarkFolderID;
+		else
+			$filter['ParentID'] = 0;
 
 		return Bookmark::get()->filter($filter)->filterByCallback(function($item, $list) {
 			return $item->canView();
