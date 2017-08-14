@@ -26,26 +26,24 @@ class Bookmarks_Controller extends Page_Controller {
 			Security::permissionFailure($this);
 
 		parent::init();
+
+		$title = _t('Bookmarks_Controller.BOOKMARKSTITLE', 'Bookmarks');
+
+		$this->Title = $title;
+		$this->MenuTitle = $title;
+		$this->MetaTitle = $title;
 	}
 
 	public function index() {
-		if (($form = $this->NullForm()) && $form->Message() && $form->MessageType() == "good") {
-			$title = _t('Bookmarks_Controller.BOOKMARKSTITLE', 'Bookmarks');
+		if (($form = $this->NullForm()) && $form->Message() && $form->MessageType() == "good")
 			$content = '';
-		}
-		else {
-			$title = _t('Bookmarks_Controller.BOOKMARKSTITLE', 'Bookmarks');
+		else
 			$content = '';
-		}
 
 		$outputData = array (
 			'Content' => $content,
 			'Form' => $form
 		);
-
-		$this->Title = $title;
-		$this->MenuTitle = $title;
-		$this->MetaTitle = $title;
 
 		if ($this->request->isAjax())
 			$template = 'Bookmarks';
@@ -182,6 +180,7 @@ class Bookmarks_Controller extends Page_Controller {
 		$validator = $bookmark->getFrontEndValidator();
 
 		$form = Form::create($this, __FUNCTION__, $fields, $actions, $validator);
+		$form->setFormAction($this->CustomFormLink($form->Name));
 		$form->loadDataFrom($bookmark);
 
 		$form->fields()->push(new HiddenField('CurrentTitle', null, $this->CurrentTitle()));
@@ -259,7 +258,7 @@ class Bookmarks_Controller extends Page_Controller {
 		return Controller::join_links(Director::baseURL() . 'bookmarks', $action);
 	}
 
-	public function FormObjectLink($formName) {
+	private function CustomFormLink($formName) {
 		return $this->Link(Controller::join_links($formName, $this->request->param('ID')));
 	}
 
