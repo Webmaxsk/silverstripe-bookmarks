@@ -6,9 +6,6 @@ $(document).on('click', ".mfp-content #Form_AddBookmarkForm_action_doAddBookmark
 
   var bookmarks = $('#bookmarks-sortable');
 
-  // silverstripe-member-widgets module
-  var memberWidgetsIsotope = $('#memberwidgets-sortable.memberwidgets-isotope');
-
   $.ajax(form.attr('action'), {
     type: "POST",
     data: form.serialize(),
@@ -24,13 +21,9 @@ $(document).on('click', ".mfp-content #Form_AddBookmarkForm_action_doAddBookmark
           bookmarks.append(json.Bookmark);
 
           $('.bookmark-star').replaceWith(json.BookmarkStar);
-          $('.BookmarksWidget .bookmark-list').replaceWith(json.BookmarkWidget);
 
-          if (memberWidgetsIsotope.length)
-            memberWidgetsIsotope.isotope('reloadItems').isotope({
-              sortBy: 'original-order'
-            });
-
+          update_bookmarks_widget(json.BookmarkWidget);
+          reload_memberwidgets();
           open_mfp_popup_ajax(json.BookmarksLink);
         }
       }

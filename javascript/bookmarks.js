@@ -27,6 +27,20 @@ function open_mfp_popup_ajax(items_source) {
   });
 }
 
+function update_bookmarks_widget(data) {
+  $('.BookmarksWidget .bookmark-list').replaceWith(data);
+}
+
+// silverstripe-member-widgets module
+function reload_memberwidgets() {
+  var memberWidgetsIsotope = $('#memberwidgets-sortable.memberwidgets-isotope');
+
+  if (memberWidgetsIsotope.length)
+    memberWidgetsIsotope.isotope('reloadItems').isotope({
+      sortBy: 'original-order'
+    });
+}
+
 function sortable_bookmarks(saveAllBookmarksLink) {
   $('#bookmarks-sortable').sortable({
     axis: 'y',
@@ -48,13 +62,14 @@ function sortable_bookmarks(saveAllBookmarksLink) {
     },
     stop: function(event, ui) {
       ui.item.removeClass('bookmark-sort-active');
-
+    },
+    update: function(event, ui) {
       $.ajax({
         data: $(this).sortable('serialize'),
         type: 'POST',
         url: saveAllBookmarksLink,
         success: function(data) {
-          $('.BookmarksWidget .bookmark-list').replaceWith(data);
+          update_bookmarks_widget(data);
         }
       });
     }
