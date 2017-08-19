@@ -92,10 +92,10 @@ class Bookmarks_Controller extends Page_Controller {
 		$this->MenuTitle = $title;
 		$this->MetaTitle = $title;
 
-		if ($this->request->isAjax())
-			$template = 'Bookmarks_add';
-		else
-			$template = array('Bookmarks_add', 'Page');
+		$template = array('Bookmarks_add', 'Bookmark_action');
+
+		if (!$this->request->isAjax())
+			$template[] = 'Page';
 
 		$outputData = array(
 			'Content' => $content,
@@ -175,10 +175,10 @@ class Bookmarks_Controller extends Page_Controller {
 		$this->MenuTitle = $title;
 		$this->MetaTitle = $title;
 
-		if ($this->request->isAjax())
-			$template = 'BookmarksFolder_add';
-		else
-			$template = array('BookmarksFolder_add','Page');
+		$template = array('BookmarksFolder_add', 'Bookmark_action');
+
+		if (!$this->request->isAjax())
+			$template[] = 'Page';
 
 		$outputData = array(
 			'Content' => $content,
@@ -255,10 +255,10 @@ class Bookmarks_Controller extends Page_Controller {
 		$this->MenuTitle = $title;
 		$this->MetaTitle = $title;
 
-		if ($this->request->isAjax())
-			$template = 'Bookmarks_edit';
-		else
-			$template = array('Bookmarks_edit', 'Page');
+		$template = array('Bookmarks_edit', 'Bookmark_action');
+
+		if (!$this->request->isAjax())
+			$template[] = 'Page';
 
 		$outputData = array(
 			'Content' => $content,
@@ -352,10 +352,10 @@ class Bookmarks_Controller extends Page_Controller {
 		$this->MenuTitle = $title;
 		$this->MetaTitle = $title;
 
-		if ($this->request->isAjax())
-			$template = 'BookmarksFolder_edit';
-		else
-			$template = array('BookmarksFolder_edit', 'Page');
+		$template = array('BookmarksFolder_edit', 'Bookmark_action');
+
+		if (!$this->request->isAjax())
+			$template[] = 'Page';
 
 		$outputData = array(
 			'Content' => $content,
