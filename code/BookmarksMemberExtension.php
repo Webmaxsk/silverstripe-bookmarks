@@ -17,7 +17,8 @@ class BookmarksMemberExtension extends DataExtension {
 
 	public function updateCMSFields(FieldList $fields) {
 		if ($bookmarksGridField = $fields->dataFieldByName('Bookmarks')) {
-			$bookmarksGridField->setList($this->owner->getMyBookmarks());
+			if (($myBookmarks = $this->owner->getMyBookmarks()) && $myBookmarks->count())
+				$bookmarksGridField->setList($myBookmarks);
 
 			$bookmarksGridFieldConfig = $bookmarksGridField->getConfig();
 
@@ -58,7 +59,7 @@ class BookmarksMemberExtension extends DataExtension {
 
 	public function getMyBookmarks($bookmarkFolderID = null) {
 		$filter = array(
-			'OwnerID' => Member::currentUserID()
+			'OwnerID' => $this->owner->ID
 		);
 
 		if ($bookmarkFolderID)
